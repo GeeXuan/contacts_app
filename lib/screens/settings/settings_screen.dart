@@ -1,4 +1,6 @@
+import 'package:contacts_app/main.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -15,12 +17,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: ListView(children: <Widget>[
         SwitchListTile(
           title: new Text('Receive notification'),
+          value: prefs.getBool('enableLocalNotification'),
           onChanged: (bool value) {
-            return !value;
+            setState(() {
+              saveSwitchState(value);
+              if (value) {
+                periodicNotification();
+              } else {
+                flutterLocalNotificationsPlugin.cancelAll();
+              }
+            });
           },
-          value: false,
         )
       ]),
     );
+  }
+
+  Future<bool> saveSwitchState(bool value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.setBool("enableLocalNotification", value);
+  }
+
+  Future<bool> getSwitchState() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool("enableLocalNotification");
   }
 }
