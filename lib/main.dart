@@ -53,13 +53,14 @@ Future periodicNotification() async {
     enableLights: true,
     playSound: true,
     showWhen: true,
+    styleInformation: BigTextStyleInformation(''),
   );
   const NotificationDetails platformChannelSpecifics =
       NotificationDetails(android: androidPlatformChannelSpecifics);
   await flutterLocalNotificationsPlugin.periodicallyShow(
     0,
     'This is a local notification',
-    'This is a local notification, and it will repeat every minute. Disable it in settings.',
+    'This is a local notification, and it will repeat every minute. You can disable it in settings.',
     RepeatInterval.everyMinute,
     platformChannelSpecifics,
     androidAllowWhileIdle: true,
